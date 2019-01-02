@@ -48,12 +48,17 @@ $(document).ready(function(){
   })
 
   $(".channel").on("click", function(){
-    localStorage.setItem("current_channel", $(this).find("h5").text())
+    // if current channel is not the chosen channel
+    if (localStorage.getItem("current_channel") != $(this).find("h5").text()){
+      localStorage.setItem("current_channel", $(this).find("h5").text())
+      //Clear message display
+      $(".msg_history").empty();
 
-    //Clear message display
-    $(".msg_history").empty();
+      //get the channel's message:
+    }
 
-    //load message of that channel up
+    //current channel is the chosen channel: do nothing.
+    return false;
   })
 })
   /**$("#user_message").on("submit", function(){
