@@ -42,15 +42,17 @@
             <!-- Channel name section -->
             <div class="inbox_chat">
               <!-- Channel element-->
-              <a href = "/Global" class = "channel">
+              {% for channel in channels %}
+              <a href = "#" class = "channel">
               <div class="chat_list active_chat">
                 <div class="chat_people">
                   <div class="chat_ib">
-                    <h5 id ="Global">Global</h5>
+                    <h5 id ="{{channel}}">{{channel}}</h5>
                   </div>
                 </div>
               </div>
             </a>
+            {% endfor %}
               <!-- End channel element-->
             </div>
             <!-- End Channel name section -->

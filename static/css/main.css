@@ -50,6 +50,10 @@ img{ max-width:100%;}
   width: 88%;
 }
 
+.active{
+  background-color: #666;
+  color: purple;
+}
 .chat_people{ overflow:hidden; clear:both;}
 .chat_list {
   border-bottom: 1px solid #c4c4c4;
