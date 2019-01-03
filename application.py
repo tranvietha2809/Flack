@@ -6,7 +6,9 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 
 user = []
 channels = ["Global"]
-message = {}
+message = {
+    "Global": []
+}
 app = Flask(__name__)
 socketio = SocketIO(app)
 
@@ -34,6 +36,11 @@ def username_validate(data, methods = ["GET", "POST"]):
 def create_channel(data):
     channels.append(data['channel_name'])
     socketio.emit("created channel", data, callback = print("Created channel {}".format(data['channel_name'])))
+
+
+@socketio.on("join")
+def join_channel(data):
+    join_room(data['channel'])
 
 
 if __name__ == '__main__':

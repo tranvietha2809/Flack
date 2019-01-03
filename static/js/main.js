@@ -50,11 +50,20 @@ $(document).ready(function(){
   $(".channel").on("click", function(){
     // if current channel is not the chosen channel
     if (localStorage.getItem("current_channel") != $(this).find("h5").text()){
+
+      //quit the current channel
+      leaveChannel(localStorage.getItem("username"), localStorage.getItem("current_channel"))
+
+      //set current channel to chosen channel
       localStorage.setItem("current_channel", $(this).find("h5").text())
+
       //Clear message display
       $(".msg_history").empty();
 
-      //get the channel's message:
+      //get the channel's message
+      socket.emit("get channel message", {
+        "channel_name": localStorage.getItem("current_channel")
+      })
     }
 
     //current channel is the chosen channel: do nothing.
