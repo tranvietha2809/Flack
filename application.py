@@ -35,13 +35,29 @@ def username_validate(data, methods = ["GET", "POST"]):
 @socketio.on("create channel")
 def create_channel(data):
     channels.append(data['channel_name'])
+    message[data['channel_name']] = []
+    print(channels)
     socketio.emit("created channel", data, callback = print("Created channel {}".format(data['channel_name'])))
 
-
 @socketio.on("join")
-def join_channel(data):
+def on_join(data):
     join_room(data['channel'])
+    channel_messages = message[data['channel']]
+    socketio.emit("receive channel message", channel_messages,
+        callback = print("User: {} has joined channel {}".format(data['username'], data['channel'])),
+        room = request.sid)
 
+@socketio.on("leave")
+def on_leave(data):
+    leave_room(data['channel'])
+
+@socketio.on("send message")
+def send_message(data):
+    channel = data.pop('channel')
+    message[channel].append(data)
+    print(message)
+    socketio.emit("receive message", data,
+        callback = print("Received message from {}, channel {}".format(data["username"], channel)), room = channel)
 
 if __name__ == '__main__':
     socketio.run(app, debug= True)
