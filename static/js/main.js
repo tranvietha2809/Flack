@@ -11,9 +11,8 @@ var other_message_template = Handlebars.compile(`
     <div class="incoming_msg_img">
     <div class="received_msg">
       <div class="received_withd_msg">
-        <p>{{username}}</p>
         <p>{{message}}</p>
-        <span class="time_date">{{timestamp}}</span></div>
+        <span class="time_date">{{username}}</span></div>
     </div>
   </div>
   `);
@@ -88,9 +87,20 @@ $(document).ready(function(){
   socket.on("receive channel message", function(data){
     //Clear message display
     $(".msg_history").empty();
-
+    let msg_html;
     //TODO: display messages of the channel
     //TODO: display messages with user message on the right, guest messages on the left
+    for(var i = 0; i < data.length; i++){
+      if(data[i]["username"] == sessionStorage.getItem("username")){
+        msg_html = my_message_template(data[i]);
+        $(".msg_history").append(msg_html);
+      }
+      else{
+        msg_html = other_message_template(data[i]);
+        $(".msg_history").append(msg_html);
+      }
+    }
+
   })
 
   $("#user_message").on("submit", function(){
@@ -110,12 +120,18 @@ $(document).ready(function(){
   })
 
   socket.on("receive message", function(data){
+    let msg_html;
     let data_context = {
       "username": data["username"],
       "message": data["message"],
       "timestamp": data["timestamp"]
     };
-    let msg_html = my_message_template(data_context);
+    if(sessionStorage.getItem("username") == data_context["username"]){
+      msg_html = my_message_template(data_context);
+    }
+    else{
+      msg_html = other_message_template(data_context);
+    };
     $(".msg_history").append(msg_html);
   })
 })
