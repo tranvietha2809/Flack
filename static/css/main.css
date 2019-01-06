@@ -66,7 +66,7 @@ img{ max-width:100%;}
 
 .incoming_msg_img {
   display: inline-block;
-  width: 6%;
+  width: 90%;
 }
 .received_msg {
   display: inline-block;
